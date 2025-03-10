@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>跳动爱心-宝宝</title>
+    <style>
+        body {
+            background: #2c3e50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: relative;
+            width: 200px;  /* 增大爱心尺寸 */
+            height: 200px;
+            animation: heartbeat 1.2s infinite;
+            transform-origin: center;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 100px;  /* 按比例放大 */
+            height: 160px;
+            background: #ff9999;
+            border-radius: 100px 100px 0 0;
+            box-shadow: 0 0 60px #ff9999; /* 增强阴影效果 */
+        }
+
+        .heart::before {
+            left: 100px;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+
+        .heart::after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+
+        /* 添加文字样式 */
+        .text {
+            position: absolute;
+            top: -30px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5em;
+            color: white;
+            font-family: 'Microsoft YaHei', sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 1; /* 确保文字在爱心上方 */
+            pointer-events: none; /* 防止点击穿透 */
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+            15% {
+                transform: scale(1.3);
+            }
+            30% {
+                transform: scale(1);
+            }
+            45% {
+                transform: scale(1.15);
+            }
+            60% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .particles span {
+            /* 保持原有粒子效果 */
+            width: 10px;  /* 稍微增大粒子 */
+            height: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="heart">
+        <div class="text">宝宝</div> <!-- 添加文字 -->
+    </div>
+
+    <script>
+        // 保持原有JavaScript不变，增加文字点击效果
+        const text = document.querySelector('.text');
+        const colors = ['#ff3f3f', '#ff6b6b', '#ff9999', '#ffcccc'];
+
+        text.addEventListener('click', function(e) {
+            createParticles(e.clientX, e.clientY);
+        });
+
+        function createParticles(x, y) {
+            const particles = document.createElement('div');
+            particles.className = 'particles';
+            
+            for(let i = 0; i < 16; i++) { // 增加粒子数量
+                const span = document.createElement('span');
+                const angle = (Math.PI * 2 * i) / 16;
+                const distance = Math.random() * 120 + 60; // 增大扩散范围
+                
+                span.style.left = x + 'px';
+                span.style.top = y + 'px';
+                span.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                span.style.setProperty('--x', Math.cos(angle) * distance + 'px');
+                span.style.setProperty('--y', Math.sin(angle) * distance + 'px');
+                
+                particles.appendChild(span);
+            }
+            
+            document.body.appendChild(particles);
+            setTimeout(() => particles.remove(), 1000);
+        }
+
+        // 自动跳动加强
+        setInterval(() => {
+            document.querySelector('.heart').classList.add('strong-beat');
+            setTimeout(() => {
+                document.querySelector('.heart').classList.remove('strong-beat');
+            }, 300);
+        }, 8000);
+    </script>
+</body>
+</html>
